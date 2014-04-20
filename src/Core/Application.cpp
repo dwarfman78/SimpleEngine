@@ -20,6 +20,8 @@ Application::Application() : paused(false), myBackgroundIsSet(false)
     {
         log << "Error, couldnt open application config file : " + APPLICATION_CONF_FILE;
     }
+
+    pushScene(std::make_shared<SceneSetImplementation>());
 }
 void Application::initGraphicEngine(const pugi::xml_document& doc)
 {
@@ -107,8 +109,8 @@ void Application::addTemporarySoundEntity(const std::string& soundName)
         ;
     }
     );
-
-    registerRenderable(entity);
+    if(!mySceneStack.empty())
+        mySceneStack.top()->registerRenderable(entity);
     myParticles.insert(entity);
 
 
@@ -143,7 +145,7 @@ void Application::addTemporaryParticleEntity(float positionX, float positionY,fl
 
     entity->setRotation(rotation);
 
-    registerRenderable(entity);
+    mySceneStack.top()->registerRenderable(entity);
     myParticles.insert(entity);
 }
 void Application::start()
@@ -157,6 +159,9 @@ void Application::start()
     myNextTick = myClock.getElapsedTime().asMicroseconds();
     unsigned int loops = 0;
     sf::Int64 windowSize = 1000000 / myMaxFps;
+
+    if(mySceneStack.empty())
+        mySceneStack.push(std::make_shared<SceneSetImplementation>());
 
     while(window.isOpen())
     {
@@ -196,23 +201,10 @@ void Application::start()
     }
 
 }
-bool Application::present(std::shared_ptr<Renderable> renderable) const
-{
-    return myRenderables.find(renderable) != myRenderables.end();
-}
 void Application::cleanRenderables()
 {
-    for(std::set<std::shared_ptr<Renderable> >::iterator i = myRenderables.begin(); i!=myRenderables.end();)
-    {
-        if((*i)->unregister())
-        {
-            myRenderables.erase(*(i++));
-        }
-        else
-        {
-            ++i;
-        }
-    }
+    if(!mySceneStack.empty())
+        getCurrentScene()->cleanRenderables();
 }
 void Application::handleEvents()
 {
@@ -226,6 +218,29 @@ void Application::handleEvents()
         notifyObservers(event);
     }
 }
+/** @brief pushScene
+  *
+  * @todo: document this function
+  */
+void Application::pushScene(std::shared_ptr<Scene> scene)
+{
+    mySceneStack.push(scene);
+}
+
+/** @brief popScene
+  *
+  * @todo: document this function
+  */
+void Application::popScene()
+{
+    mySceneStack.pop();
+}
+
+std::shared_ptr<Scene> Application::getCurrentScene() const
+{
+    return mySceneStack.top();
+}
+
 void Application::notifyObservers(const sf::Event& event) const
 {
     // Wrap sf::Event into se::Event
@@ -243,36 +258,26 @@ void Application::stop()
 {
     GraphicEngine::getInstance()->getRenderWindow().close();
     myMusic.stop();
+    while(!mySceneStack.empty())
+        mySceneStack.pop();
 }
 
 void Application::interpolate(const float interpolation)
 {
-    // Sweep renderable
-    for(std::set<std::shared_ptr<Renderable> >::iterator i = myRenderables.begin(); i != myRenderables.end(); ++i)
-    {
-        // Render it
-        if(!(*i)->unregister())
-            (*i)->interpolate(interpolation);
-    }
+    if(!mySceneStack.empty())
+        mySceneStack.top()->interpolate(interpolation);
 }
 void Application::render()
 {
-    // Sweep renderable
-    for(auto i : myRenderables)
-    {
-        // Render it
-        if(!(i)->unregister())
-            (i)->render();
-    }
+    // We render the current scene.
+    if(!mySceneStack.empty())
+        mySceneStack.top()->render();
 }
 void Application::renderLogic()
 {
-    // Sweep renderable
-    for(auto i : myRenderables)
-    {
-        if(!(i)->unregister())
-            (i)->renderLogic();
-    }
+    // We render the current scene.
+    if(!mySceneStack.empty())
+        mySceneStack.top()->renderLogic();
 }
 void Application::setBackground(const std::string& name)
 {
@@ -294,7 +299,8 @@ void Application::cleanParticles()
     {
         if(!(*it)->getContext().getParticleContext().isAlive())
         {
-            unregisterRenderable(*it);
+            if(!mySceneStack.empty())
+                mySceneStack.top()->unregisterRenderable(*it);
             //delete *it;
             myParticles.erase(it++);
 
@@ -305,12 +311,7 @@ void Application::cleanParticles()
         }
     }
 }
-void Application::registerRenderable(std::shared_ptr<Renderable> renderable)
-{
-    // Add a reference to a renderable
-    myRenderables.insert(renderable);
 
-}
 void Application::pause()
 {
     paused = true;
@@ -321,10 +322,7 @@ void Application::unpause()
     myClock.restart();
     myNextTick = 0;
 }
-void Application::unregisterRenderable(std::shared_ptr<Renderable> renderable)
-{
-    myRenderables.erase(renderable);
-}
+
 void Application::registerObserver(std::shared_ptr<Observer> observer)
 {
     // Add a reference to a observer

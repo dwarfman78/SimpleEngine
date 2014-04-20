@@ -13,6 +13,8 @@
 #include <SimpleEngine/Core/Event.hpp>
 #include <SimpleEngine/Core/Entity.hpp>
 #include <SimpleEngine/Graphic/ParticleStrategy.hpp>
+#include <SimpleEngine/Core/Impl/SceneSetImplementation.hpp>
+#include <SimpleEngine/Core/Scene.hpp>
 ////////////////////////////////////////////////////////////
 
 namespace se
@@ -61,7 +63,7 @@ public:
     /// at each rendering loop
     /// \param renderable: a reference to a renderable, you have to handle memory allocation.
     ////////////////////////////////////////////////////////////
-    void registerRenderable(std::shared_ptr<Renderable> renderable);
+    //void registerRenderable(std::shared_ptr<Renderable> renderable);
 
     ////////////////////////////////////////////////////////////
     /// Remove a renderable from the application.
@@ -69,7 +71,7 @@ public:
     /// Nothing happend if the reference is not valid or the renderable is not registered.
     /// \param renderable : a reference to a registered renderable.
     ////////////////////////////////////////////////////////////
-    void unregisterRenderable(std::shared_ptr<Renderable> renderable);
+    //void unregisterRenderable(std::shared_ptr<Renderable> renderable);
 
     ////////////////////////////////////////////////////////////
     /// Add an observer to the application. Observers are notified (notify method is called)
@@ -97,9 +99,22 @@ public:
 
     void pauseMusic();
 
-    bool present(std::shared_ptr<Renderable> renderable) const;
-
     void setBackground(const std::string& name);
+
+    ////////////////////////////////////////////////////////////
+    /// Push a scene to the scene stack. The last scene pushed will be the scene rendered.
+    ////////////////////////////////////////////////////////////
+    void pushScene(std::shared_ptr<Scene> scene);
+
+    ////////////////////////////////////////////////////////////
+    /// Pop a scene from the scene stack.
+    ////////////////////////////////////////////////////////////
+    void popScene();
+
+    ////////////////////////////////////////////////////////////
+    /// Get current scene to be rendered.
+    ////////////////////////////////////////////////////////////
+    std::shared_ptr<Scene> getCurrentScene() const;
 
 private:
 
@@ -123,11 +138,11 @@ private:
     void cleanRenderables();
     ////////////////////////////////////////////////////////////
 
+    std::stack<std::shared_ptr<Scene> > mySceneStack;
 
     ////////////////////////////////////////////////////////////
     /// Renderables and observers data storage
     ////////////////////////////////////////////////////////////
-    std::set< std::shared_ptr<Renderable> > myRenderables;
     std::set< std::shared_ptr<Observer> > myObservers;
     std::set< std::shared_ptr<Entity> > myParticles;
     ////////////////////////////////////////////////////////////

@@ -51,6 +51,7 @@
 #include <unordered_set>
 #include <functional>
 #include <memory>
+#include <stack>
 
 ///////////////////
 // Consts
