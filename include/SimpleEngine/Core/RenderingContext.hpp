@@ -22,6 +22,7 @@ namespace se
     class SE_API RenderingContext : public NonCopyable, public Context
     {
         public:
+        RenderingContext();
         DrawingContext& getDrawingContext();
         GeometricalContext& getGeometricalContext();
         AnimationContext& getAnimationContext();
@@ -31,7 +32,8 @@ namespace se
         bool isValid() const;
         void setInterpolation(const float interpolation);
         float getInterpolation() const;
-
+        void unregister();
+        bool isUnregistered() const;
         private:
         DrawingContext myDrawingContext;
         GeometricalContext myGeometricalContext;
@@ -40,6 +42,7 @@ namespace se
         ParticleContext myParticleContext;
         SoundContext mySoundContext;
         float myInterpolation;
+        bool unregistered;
     };
 }
 #endif

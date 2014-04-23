@@ -52,6 +52,8 @@ void Application::initGraphicEngine(const pugi::xml_document& doc)
         myMaxFps = screen.attribute("maxfps").as_int();
         window.setFramerateLimit(myMaxFps*4);
 
+        GraphicEngine::getInstance()->init();
+
     }
     else
     {
@@ -77,7 +79,10 @@ void Application::loadMusic(const std::string& fileName)
     myMusic.setLoop(true);
     myMusic.setVolume(30);
 
-
+}
+bool Application::isPaused() const
+{
+    return paused;
 }
 void Application::playMusic()
 {
@@ -87,10 +92,13 @@ void Application::pauseMusic()
 {
     myMusic.pause();
 }
+const sf::Music& Application::getCurrentMusic() const
+{
+    return myMusic;
+}
 
 void Application::addTemporarySoundEntity(const std::string& soundName)
 {
-
     std::shared_ptr<Entity> entity = std::make_shared<Entity>();
     entity->makeSound(soundName);
 
@@ -111,6 +119,7 @@ void Application::addTemporarySoundEntity(const std::string& soundName)
     );
     if(!mySceneStack.empty())
         mySceneStack.top()->registerRenderable(entity);
+
     myParticles.insert(entity);
 
 
@@ -145,7 +154,8 @@ void Application::addTemporaryParticleEntity(float positionX, float positionY,fl
 
     entity->setRotation(rotation);
 
-    mySceneStack.top()->registerRenderable(entity);
+    if(!mySceneStack.empty())
+        mySceneStack.top()->registerRenderable(entity);
     myParticles.insert(entity);
 }
 void Application::start()
@@ -192,10 +202,21 @@ void Application::start()
         window.clear(sf::Color(96,96,96));
 
         if(myBackgroundIsSet)
+        {
             se::GraphicEngine::getInstance()->draw(myBackgroundSprite);
+
+        }
+
 
         // Render all renderables
         render();
+
+        sf::RenderTexture& renderTexture = GraphicEngine::getInstance()->getRenderTexture();
+        renderTexture.display();
+
+        sf::Sprite finalSprite(renderTexture.getTexture());
+
+        window.draw(finalSprite);
         // Display the window
         window.display();
     }
@@ -299,8 +320,6 @@ void Application::cleanParticles()
     {
         if(!(*it)->getContext().getParticleContext().isAlive())
         {
-            if(!mySceneStack.empty())
-                mySceneStack.top()->unregisterRenderable(*it);
             //delete *it;
             myParticles.erase(it++);
 

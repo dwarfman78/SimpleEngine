@@ -38,9 +38,23 @@ namespace se
 
         bool isShowFps() const;
 
+        sf::RenderTexture& getRenderTexture();
+
+        void init();
+
+        void applyShader(const std::string& fileName);
+
+        sf::Shader shader;
+
         private:
 
         sf::RenderWindow myRenderWindow;
+
+        sf::RenderTexture myRenderTexture;
+
+
+
+        sf::Sprite sprite;
 
         bool myShowFps;
 

@@ -17,6 +17,10 @@ void Menu::scrollDown()
 {
     if(myOptions.size()!=0)
     {
+        if(myCurrentOption==myOptions.begin())
+        {
+            myCurrentOption = myOptions.end();
+        }
         myCurrentOption--;
     }
 }

@@ -58,6 +58,8 @@ public:
     ////////////////////////////////////////////////////////////
     void unpause();
 
+    bool isPaused() const;
+
     ////////////////////////////////////////////////////////////
     /// Add renderable to the application, its "render" method will be called
     /// at each rendering loop
@@ -98,6 +100,8 @@ public:
     void playMusic();
 
     void pauseMusic();
+
+    const sf::Music& getCurrentMusic() const;
 
     void setBackground(const std::string& name);
 

@@ -1,7 +1,7 @@
 #include <SimpleEngine/Core/Entity.hpp>
 namespace se
 {
-Entity::Entity() : unregistered(false),live([](RenderingContext& context){;}), die([](RenderingContext& context){;})
+Entity::Entity() : live([](RenderingContext& context){;}), die([](RenderingContext& context){;})
 {
     ;
 }
@@ -15,7 +15,7 @@ RenderingContext& Entity::getContext()
 }
 bool Entity::unregister() const
 {
-    return unregistered;
+    return myContext.isUnregistered();
 }
 Entity& Entity::makeWritable(const std::string& text)
 {

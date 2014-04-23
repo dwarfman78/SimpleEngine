@@ -1,6 +1,7 @@
 #include <SimpleEngine/Core/RenderingContext.hpp>
 namespace se
 {
+    RenderingContext::RenderingContext() : unregistered(false){}
     DrawingContext& RenderingContext::getDrawingContext()
     {
         return myDrawingContext;
@@ -36,5 +37,13 @@ namespace se
     float RenderingContext::getInterpolation() const
     {
         return myInterpolation;
+    }
+    void RenderingContext::unregister()
+    {
+        unregistered = true;
+    }
+    bool RenderingContext::isUnregistered() const
+    {
+        return unregistered;
     }
 }

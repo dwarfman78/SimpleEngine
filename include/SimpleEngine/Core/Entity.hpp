@@ -122,8 +122,6 @@ namespace se
         RenderingContext& getContext();
 
 
-        bool unregistered;
-
         protected:
 
         ////////////////////////////////////////////////////////////
@@ -170,8 +168,6 @@ namespace se
        // std::function<void(RenderingContext&)>& born;
         std::function<void(RenderingContext&)> live;
         std::function<void(RenderingContext&)> die;
-
-        bool registered;
 
     };
 }

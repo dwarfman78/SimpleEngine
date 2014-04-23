@@ -21,8 +21,8 @@ public:
         //std::cout << "Particle : " <<  pc.isValid() <<" " << se::Utils::toString(pc.getLifeTime()) << " " << pc.getCurrentTime().getElapsedTime().asMicroseconds() << std::endl;
         if(pc.isValid() && pc.getCurrentTime().getElapsedTime().asMicroseconds() >= pc.getLifeTime())
         {
-            //std::cout << "setAlive false" << std::endl;
             pc.setAlive(false);
+            renderingContext.unregister();
         }
     };
     static void die(RenderingContext& renderingContext) {};
