@@ -330,7 +330,13 @@ void Application::cleanParticles()
         }
     }
 }
+void Application::reset()
+{
+    while(!mySceneStack.empty())
+        mySceneStack.pop();
 
+    mySceneStack.push(std::make_shared<SceneSetImplementation>());
+}
 void Application::pause()
 {
     paused = true;
