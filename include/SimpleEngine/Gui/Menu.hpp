@@ -11,6 +11,7 @@ namespace se
             void addOption(std::shared_ptr<Option> option);
             void removeOption(std::shared_ptr<Option> option);
             std::shared_ptr<Option> getCurrentOption();
+            void clearOptions();
         private:
             std::set<std::shared_ptr<Option> > myOptions;
             std::set<std::shared_ptr<Option> >::iterator myCurrentOption;

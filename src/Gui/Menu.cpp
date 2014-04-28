@@ -32,7 +32,20 @@ void Menu::addOption(std::shared_ptr<Option> option)
 }
 void Menu::removeOption(std::shared_ptr<Option> option)
 {
+    if(option == getCurrentOption())
+    {
+        myCurrentOption = myOptions.begin();
+    }
     myOptions.erase(option);
+    if(myOptions.size()==0)
+        myCurrentOption = myOptions.end();
+}
+void Menu::clearOptions()
+{
+    while(myOptions.size()>0)
+    {
+        removeOption(getCurrentOption());
+    }
 }
 std::shared_ptr<Option> Menu::getCurrentOption()
 {
