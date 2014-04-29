@@ -3,13 +3,13 @@ Manager<M,R,xmlTag>::Manager() : myXmlTag(xmlTag)
 {
     Logger log("Manager::Manager");
 
-    log << "Trying to load medias config file : " + MEDIAS_CONF_FILE;
+    //log << "Trying to load medias config file : " + MEDIAS_CONF_FILE;
 
     pugi::xml_document doc;
 
     if(doc.load_file(MEDIAS_CONF_FILE.c_str()))
     {
-        log << "Medias file successfully loaded, loading resources";
+        //log << "Medias file successfully loaded, loading resources";
 
         // load resources from conf
         loadResources(doc);
@@ -22,15 +22,15 @@ Manager<M,R,xmlTag>::Manager() : myXmlTag(xmlTag)
 template <class M, class R, const xmlTags::xmlTag xmlTag>
 R Manager<M,R,xmlTag>::getResource(const std::string& resourceName) const
 {
-    Logger log("Manager::getResource");
+    //Logger log("Manager::getResource");
 
-    log << "trying to get resource : " + resourceName;
+    //log << "trying to get resource : " + resourceName;
 
     R returnValue;
     // seek the internal map for key and value
     if(myResources.find(resourceName) != myResources.end())
     {
-        log << "resource found !";
+        //log << "resource found !";
 
         return R(myResources.find(resourceName)->second);
     }
