@@ -48,8 +48,6 @@ void GraphicEngine::applyShader(const std::string& fileName)
     {
         if(shader.loadFromFile(fileName,sf::Shader::Fragment))
         {
-            //shader.setParameter("pixel_threshold", 0.1);
-
             myRenderTexture.draw(sf::Sprite(myRenderTexture.getTexture()),&shader);
 
             myRenderTexture.display();
@@ -63,7 +61,6 @@ void GraphicEngine::applyShader(const std::string& fileName)
     {
         std::cout << "shaders unavailable" << std::endl;
     }
-
 }
 }
 

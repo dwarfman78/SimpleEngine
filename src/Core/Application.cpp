@@ -68,10 +68,6 @@ void Application::initGraphicEngine(const pugi::xml_document& doc)
     GraphicEngine::getInstance()->setShowFps(screen.attribute("showfps").as_bool());
 
 }
-/** @brief playMusic
-  *
-  * @todo: document this function
-  */
 void Application::loadMusic(const std::string& fileName)
 {
 
@@ -182,7 +178,6 @@ void Application::start()
         while(myClock.getElapsedTime().asMicroseconds() >= myNextTick && loops < 5)
         {
 
-
             if(!paused)
             {
                 renderLogic();
@@ -206,7 +201,6 @@ void Application::start()
             se::GraphicEngine::getInstance()->draw(myBackgroundSprite);
 
         }
-
 
         // Render all renderables
         render();
@@ -239,19 +233,12 @@ void Application::handleEvents()
         notifyObservers(event);
     }
 }
-/** @brief pushScene
-  *
-  * @todo: document this function
-  */
+
 void Application::pushScene(std::shared_ptr<Scene> scene)
 {
     mySceneStack.push(scene);
 }
 
-/** @brief popScene
-  *
-  * @todo: document this function
-  */
 void Application::popScene()
 {
     mySceneStack.pop();
@@ -320,9 +307,7 @@ void Application::cleanParticles()
     {
         if(!(*it)->getContext().getParticleContext().isAlive())
         {
-            //delete *it;
             myParticles.erase(it++);
-
         }
         else
         {
