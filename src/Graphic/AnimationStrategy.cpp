@@ -3,6 +3,7 @@ namespace se
 {
     void AnimationStrategy::render(RenderingContext& rc)
     {
+
         // Getting animation context from global context
         AnimationContext& context = rc.getAnimationContext();
 

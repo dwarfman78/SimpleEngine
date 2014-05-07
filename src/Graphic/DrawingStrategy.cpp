@@ -3,6 +3,7 @@ namespace se
 {
 void DrawingStrategy::render(RenderingContext& rc)
 {
+
     // Get contexts from global context.
     AnimationContext& animationContext = rc.getAnimationContext();
     DrawingContext& drawingContext = rc.getDrawingContext();
