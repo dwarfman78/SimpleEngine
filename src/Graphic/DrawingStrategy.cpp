@@ -3,7 +3,6 @@ namespace se
 {
 void DrawingStrategy::render(RenderingContext& rc)
 {
-    //Logger log("DrawingStrategy::render::"+se::Utils::toString(this));
 
     // Get contexts from global context.
     AnimationContext& animationContext = rc.getAnimationContext();
@@ -16,11 +15,7 @@ void DrawingStrategy::render(RenderingContext& rc)
         // Get sprite from drawing context.
         sf::Sprite& s = drawingContext.getSprite();
 
-       // log << "Contexts valid, proceeding with drawing of sprite : " << se::Utils::toString(&s);
-
         sf::Vector3f pos = geometricalContext.getPosition();
-
-        //log << "\t drawing sprite at : " + se::Utils::toString(pos.x) + " " + se::Utils::toString(pos.y);
 
         // Set position and scale from geometric context.
         s.setPosition(  pos.x,
@@ -28,11 +23,7 @@ void DrawingStrategy::render(RenderingContext& rc)
 
         sf::Vector2f scale = geometricalContext.getScale();
 
-       // log << "\t scale : " + se::Utils::toString(scale.x) + " " + se::Utils::toString(scale.y);
-
         s.setScale(scale);
-
-       // log << "\t rotation : " + se::Utils::toString(geometricalContext.getRotation());
 
         s.setRotation(geometricalContext.getRotation());
 
@@ -40,7 +31,6 @@ void DrawingStrategy::render(RenderingContext& rc)
 
         if(animationContext.isValid())
         {
-            //log << "\t animation context valid, proceeding";
             // If entities is animated,
             // we have to define a subRec
             // corresponding to the current frame animation.
