@@ -8,23 +8,54 @@
 ////////////////////////////////////////////////////////////
 namespace se
 {
+////////////////////////////////////////////////////////////
+/// Scene interface.
+////////////////////////////////////////////////////////////
+class SE_API Scene : public NonCopyable, public Renderable
+{
+public:
     ////////////////////////////////////////////////////////////
-    /// Scene interface.
+    /// See Renderable.
     ////////////////////////////////////////////////////////////
-    class SE_API Scene : public NonCopyable, public Renderable
-    {
-        public:
-            ////////////////////////////////////////////////////////////
-            /// See Renderable.
-            ////////////////////////////////////////////////////////////
-            virtual void registerRenderable(std::shared_ptr<Renderable> renderable) = 0;
-            virtual void unregisterRenderable(std::shared_ptr<Renderable> renderable) = 0;
-            virtual void cleanRenderables() = 0;
-            virtual void render() = 0;
-            virtual void renderLogic() = 0;
-            virtual void interpolate(const float interpolation) = 0;
-            ////////////////////////////////////////////////////////////
+    virtual void render() = 0;
+    virtual void renderLogic() = 0;
+    virtual void interpolate(const float interpolation) = 0;
+    ////////////////////////////////////////////////////////////
+    virtual void registerRenderable(std::shared_ptr<Renderable> renderable) = 0;
+    virtual void unregisterRenderable(std::shared_ptr<Renderable> renderable) = 0;
+    virtual void cleanRenderables() = 0;
 
-    };
+    ////////////////////////////////////////////////////////////
+
+    ////////////////////////////////////////////////////////////
+    /// Load a music from its filename.
+    ////////////////////////////////////////////////////////////
+    virtual void loadMusic(const std::string& fileName) = 0;
+
+    ////////////////////////////////////////////////////////////
+    /// Play current music.
+    ////////////////////////////////////////////////////////////
+    virtual void playMusic()= 0;
+
+    ////////////////////////////////////////////////////////////
+    /// Pause current music.
+    ////////////////////////////////////////////////////////////
+    virtual void pauseMusic()= 0;
+
+    ////////////////////////////////////////////////////////////
+    /// Get current sf::Music.
+    ////////////////////////////////////////////////////////////
+    virtual const sf::Music& getCurrentMusic() const = 0;
+
+    ////////////////////////////////////////////////////////////
+    /// Add a particle entity, particle entities are normal entities
+    /// automatically removed from the scene.
+    /// //TODO needs rework because this method's signature is so ugly
+    ////////////////////////////////////////////////////////////
+    virtual void addTemporaryParticleEntity(float positionX, float positionY, float originX, float originY, float rotation, sf::Int64 duration, const std::string& media, const std::string& animation) = 0;
+
+    virtual void addTemporarySoundEntity(const std::string& soundName) = 0;
+
+};
 }
 #endif // Scene_hpp

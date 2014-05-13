@@ -68,92 +68,13 @@ void Application::initGraphicEngine(const pugi::xml_document& doc)
     GraphicEngine::getInstance()->setShowFps(screen.attribute("showfps").as_bool());
 
 }
-void Application::loadMusic(const std::string& fileName)
-{
 
-    myMusic.openFromFile(fileName);
-    myMusic.setLoop(true);
-    myMusic.setVolume(30);
-
-}
 bool Application::isPaused() const
 {
     return paused;
 }
-void Application::playMusic()
-{
-    myMusic.play();
-}
-void Application::pauseMusic()
-{
-    myMusic.pause();
-}
-const sf::Music& Application::getCurrentMusic() const
-{
-    return myMusic;
-}
-
-void Application::addTemporarySoundEntity(const std::string& soundName)
-{
-    std::shared_ptr<Entity> entity = std::make_shared<Entity>();
-    entity->makeSound(soundName);
-
-    entity->getContext().getParticleContext().setLifeTime(entity->getContext().getSoundContext().getSound().getBuffer()->getDuration().asMicroseconds());
-    entity->makeParticle(
-        [](RenderingContext& context)
-    {
-        ParticleStrategy::born(context);
-    },
-    [](RenderingContext& context)
-    {
-        ParticleStrategy::live(context);
-    },
-    [](RenderingContext& context)
-    {
-        ;
-    }
-    );
-    if(!mySceneStack.empty())
-        mySceneStack.top()->registerRenderable(entity);
-
-    myParticles.insert(entity);
 
 
-}
-void Application::addTemporaryParticleEntity(float positionX, float positionY,float originX, float originY, float rotation, const sf::Int64 duration, const std::string& media, const std::string& animation)
-{
-    std::shared_ptr<Entity> entity = std::make_shared<Entity>();
-
-    entity->makeDrawable(media);
-
-    entity->makeAnimable(animation);
-
-    entity->makeParticle(
-        [](RenderingContext& context)
-    {
-        ParticleStrategy::born(context);
-    },
-    [](RenderingContext& context)
-    {
-        ParticleStrategy::live(context);
-    },
-    [](RenderingContext& context)
-    {
-        ParticleStrategy::die(context);
-    }
-    );
-    entity->setPosition(positionX,positionY);
-
-    entity->getContext().getParticleContext().setLifeTime(duration);
-
-    entity->setOrigin(originX,originY);
-
-    entity->setRotation(rotation);
-
-    if(!mySceneStack.empty())
-        mySceneStack.top()->registerRenderable(entity);
-    myParticles.insert(entity);
-}
 void Application::start()
 {
     Logger log("Application::start");
@@ -187,7 +108,7 @@ void Application::start()
 
             loops++;
 
-            cleanParticles();
+            //cleanParticles();
             cleanRenderables();
         }
 
@@ -265,9 +186,6 @@ void Application::notifyObservers(const sf::Event& event) const
 void Application::stop()
 {
     GraphicEngine::getInstance()->getRenderWindow().close();
-    myMusic.stop();
-    while(!mySceneStack.empty())
-        mySceneStack.pop();
 }
 
 void Application::interpolate(const float interpolation)
@@ -298,21 +216,6 @@ void Application::setBackground(const std::string& name)
         sf::RenderWindow& window = GraphicEngine::getInstance()->getRenderWindow();
 
         myBackgroundSprite.setTextureRect(sf::IntRect(0,0,window.getSize().x,window.getSize().y));
-    }
-}
-void Application::cleanParticles()
-{
-    // Sweep renderable
-    for(std::set<std::shared_ptr<Entity> >::iterator it = myParticles.begin(); it != myParticles.end(); )
-    {
-        if(!(*it)->getContext().getParticleContext().isAlive())
-        {
-            myParticles.erase(it++);
-        }
-        else
-        {
-            ++it;
-        }
     }
 }
 void Application::reset()

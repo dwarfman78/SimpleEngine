@@ -31,6 +31,8 @@ namespace se
         /// This method tells wether or not this renderable needs to be unregistered. (two steps delete from the application)
         ////////////////////////////////////////////////////////////
         virtual bool unregister()  const = 0;
+
+        virtual unsigned int renderingPosition() const = 0;
     };
 }
 #endif

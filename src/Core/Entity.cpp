@@ -1,7 +1,14 @@
 #include <SimpleEngine/Core/Entity.hpp>
 namespace se
 {
-Entity::Entity() : live([](RenderingContext& context){;}), die([](RenderingContext& context){;})
+Entity::Entity() : live([](RenderingContext& context)
+{
+    ;
+}), die([](RenderingContext& context)
+{
+    ;
+}),
+myRenderingPosition(0)
 {
     ;
 }
@@ -16,6 +23,11 @@ RenderingContext& Entity::getContext()
 bool Entity::unregister() const
 {
     return myContext.isUnregistered();
+}
+void Entity::setRenderingPosition(unsigned int position)
+{
+
+    myRenderingPosition = position;
 }
 Entity& Entity::makeWritable(const std::string& text)
 {
@@ -113,7 +125,6 @@ Entity& Entity::setOrigin(float x, float y)
 }
 void Entity::render()
 {
-    //std::cout << "render entity " << this << std::endl;
     myAnimationStrategy.render(getContext());
     myDrawingStrategy.render(getContext());
     myWriteStrategy.render(getContext());
@@ -129,6 +140,10 @@ void Entity::render()
 void Entity::renderLogic()
 {
     ;
+}
+unsigned int Entity::renderingPosition() const
+{
+    return myRenderingPosition;
 }
 void Entity::interpolate(const float interpolation)
 {

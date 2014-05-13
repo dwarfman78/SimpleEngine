@@ -121,6 +121,9 @@ namespace se
         ////////////////////////////////////////////////////////////
         RenderingContext& getContext();
 
+        unsigned int renderingPosition() const;
+
+        void setRenderingPosition(unsigned int position);
 
         protected:
 
@@ -168,6 +171,8 @@ namespace se
        // std::function<void(RenderingContext&)>& born;
         std::function<void(RenderingContext&)> live;
         std::function<void(RenderingContext&)> die;
+
+        unsigned int myRenderingPosition;
 
     };
 }
