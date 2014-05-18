@@ -3,6 +3,7 @@
 #include <SimpleEngine/myImports.hpp>
 #include <SimpleEngine/Core/Scene.hpp>
 #include <SimpleEngine/Core/Entity.hpp>
+#include <SimpleEngine/Physics/PhysicBodyManager.hpp>
 namespace se
 {
 ////////////////////////////////////////////////////////////
@@ -22,8 +23,12 @@ public:
     void cleanRenderables();
 
     unsigned int renderingPosition() const;
-    void addTemporaryParticleEntity(float positionX, float positionY, float originX, float originY, float rotation, sf::Int64 duration, const std::string& media, const std::string& animation);
-    void addTemporarySoundEntity(const std::string& soundName);
+
+    std::shared_ptr<Entity> addTemporaryParticleEntity(float positionX, float positionY, float originX, float originY, float rotation, sf::Int64 duration, const std::string& media, const std::string& animation);
+
+    std::shared_ptr<Entity>  addTemporaryPhysicParticle(float positionX, float positionY, float originX, float originY, float rotation, sf::Int64 duration, const std::string& media, const std::string& body);
+
+    std::shared_ptr<Entity>  addTemporarySoundEntity(const std::string& soundName);
 
     ////////////////////////////////////////////////////////////
     /// Load a music from its filename.
@@ -44,6 +49,10 @@ public:
     /// Get current sf::Music.
     ////////////////////////////////////////////////////////////
     const sf::Music& getCurrentMusic() const;
+
+    b2World& getPhysicWorld() {return myPhysicWorld;};
+
+    b2Body* getGround() {return myGround;};
 private:
     std::set< std::shared_ptr<Renderable>, std::function<bool(std::shared_ptr<Renderable>, std::shared_ptr<Renderable>)> > myRenderables;
 
@@ -52,6 +61,10 @@ private:
     ////////////////////////////////////////////////////////////
     sf::Music myMusic;
     ////////////////////////////////////////////////////////////
+
+    b2World myPhysicWorld;
+
+    b2Body* myGround;
 
 };
 }

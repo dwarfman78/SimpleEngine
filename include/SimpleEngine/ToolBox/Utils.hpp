@@ -50,6 +50,14 @@ public:
     {
         return sf::Vector2f(norm*cos(teta),norm*sin(teta));
     }
+    static float metersToPixels(float meters)
+    {
+        return meters*60.0f;
+    }
+    static float pixelsToMeters(float pixels)
+    {
+        return pixels/60.0f;
+    }
 };
 }
 #endif

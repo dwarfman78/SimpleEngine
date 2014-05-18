@@ -2,8 +2,18 @@
 namespace se
 {
 SceneSetImplementation::SceneSetImplementation() :
-    myRenderables([](std::shared_ptr<Renderable> rOne, std::shared_ptr<Renderable> rTwo)->bool { return rOne->renderingPosition() <= rTwo->renderingPosition();})
+    myRenderables([](std::shared_ptr<Renderable> rOne, std::shared_ptr<Renderable> rTwo)->bool { return rOne->renderingPosition() <= rTwo->renderingPosition();}),
+              myPhysicWorld(b2Vec2(0.0,PhysicBodyManager::getInstance()->getGravity()))
 {
+    b2BodyDef groundBodyDef;
+    groundBodyDef.position.Set(Utils::pixelsToMeters(0.0f), Utils::pixelsToMeters(0.0f));
+    b2Body* groundBody = myPhysicWorld.CreateBody(&groundBodyDef);
+    b2PolygonShape groundBox;
+    groundBox.SetAsBox(Utils::pixelsToMeters(800.0f),Utils::pixelsToMeters(600.0f));
+    groundBody->CreateFixture(&groundBox, 1.0f);
+
+    myGround = groundBody;
+
 }
 SceneSetImplementation::~SceneSetImplementation()
 {
@@ -65,7 +75,41 @@ unsigned int SceneSetImplementation::renderingPosition() const
 {
     return 0;
 }
-void SceneSetImplementation::addTemporaryParticleEntity(float positionX, float positionY, float originX, float originY, float rotation, sf::Int64 duration, const std::string& media, const std::string& animation)
+std::shared_ptr<Entity>  SceneSetImplementation::addTemporaryPhysicParticle(float positionX, float positionY, float originX, float originY, float rotation, sf::Int64 duration, const std::string& media, const std::string& body)
+{
+    std::shared_ptr<Entity> entity = std::make_shared<Entity>();
+
+    entity->makeDrawable(media);
+
+    entity->makeParticle(
+        [](RenderingContext& context)
+    {
+        ParticleStrategy::born(context);
+    },
+    [](RenderingContext& context)
+    {
+        ParticleStrategy::live(context);
+    },
+    [](RenderingContext& context)
+    {
+        ParticleStrategy::die(context);
+    }
+    );
+    entity->setPosition(positionX,positionY);
+
+    entity->makePhysic(body,myPhysicWorld);
+
+    entity->getContext().getParticleContext().setLifeTime(duration);
+
+    entity->setOrigin(originX,originY);
+
+    entity->setRotation(rotation);
+
+    registerRenderable(entity);
+
+    return entity;
+}
+std::shared_ptr<Entity>  SceneSetImplementation::addTemporaryParticleEntity(float positionX, float positionY, float originX, float originY, float rotation, sf::Int64 duration, const std::string& media, const std::string& animation)
 {
     std::shared_ptr<Entity> entity = std::make_shared<Entity>();
 
@@ -96,9 +140,11 @@ void SceneSetImplementation::addTemporaryParticleEntity(float positionX, float p
     entity->setRotation(rotation);
 
     registerRenderable(entity);
+
+    return entity;
 }
 
-void SceneSetImplementation::addTemporarySoundEntity(const std::string& soundName)
+std::shared_ptr<Entity>  SceneSetImplementation::addTemporarySoundEntity(const std::string& soundName)
 {
     std::shared_ptr<Entity> entity = std::make_shared<Entity>();
 
@@ -120,6 +166,8 @@ void SceneSetImplementation::addTemporarySoundEntity(const std::string& soundNam
     );
 
     registerRenderable(entity);
+
+    return entity;
 }
 void SceneSetImplementation::loadMusic(const std::string& fileName)
 {

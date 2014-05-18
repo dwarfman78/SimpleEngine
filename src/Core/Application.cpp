@@ -123,6 +123,7 @@ void Application::start()
 
         }
 
+        getCurrentScene()->getPhysicWorld().Step(1/60.f, 6, 2);
         // Render all renderables
         render();
 

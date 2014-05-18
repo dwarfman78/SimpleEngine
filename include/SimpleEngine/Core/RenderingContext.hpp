@@ -12,6 +12,7 @@
 #include <SimpleEngine/Graphic/WriteContext.hpp>
 #include <SimpleEngine/Graphic/ParticleContext.hpp>
 #include <SimpleEngine/Sound/SoundContext.hpp>
+#include <SimpleEngine/Physics/PhysicContext.hpp>
 #include <SimpleEngine/Core/Context.hpp>
 ////////////////////////////////////////////////////////////
 namespace se
@@ -29,6 +30,7 @@ namespace se
         WriteContext& getWriteContext();
         ParticleContext& getParticleContext();
         SoundContext& getSoundContext();
+        PhysicContext& getPhysicContext();
         bool isValid() const;
         void setInterpolation(const float interpolation);
         float getInterpolation() const;
@@ -41,6 +43,7 @@ namespace se
         WriteContext myWriteContext;
         ParticleContext myParticleContext;
         SoundContext mySoundContext;
+        PhysicContext myPhysicContext;
         float myInterpolation;
         bool unregistered;
     };

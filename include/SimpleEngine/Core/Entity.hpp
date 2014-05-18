@@ -14,6 +14,7 @@
 #include <SimpleEngine/Graphic/ParticleContext.hpp>
 #include <SimpleEngine/Graphic/ParticleStrategy.hpp>
 #include <SimpleEngine/Sound/SoundStrategy.hpp>
+#include <SimpleEngine/Physics/PhysicStrategy.hpp>
 #include <SimpleEngine/Core/Manager.hpp>
 ////////////////////////////////////////////////////////////
 namespace se
@@ -62,6 +63,8 @@ namespace se
         Entity& makeParticle(std::function<void(RenderingContext&)> born, std::function<void(RenderingContext&)> live, std::function<void(RenderingContext&)> die);
 
         Entity& makeSound(const std::string& soundName);
+
+        Entity& makePhysic(const std::string& body, b2World& world);
 
         ////////////////////////////////////////////////////////////
         /// Defines the entity's position
@@ -164,6 +167,8 @@ namespace se
         WriteStrategy myWriteStrategy;
 
         SoundStrategy mySoundStrategy;
+
+        PhysicStrategy myPhysicStrategy;
 
         /////////////////////////////////////////////////////////////
         /// Particles

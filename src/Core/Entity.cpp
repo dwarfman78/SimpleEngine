@@ -79,6 +79,11 @@ Entity& Entity::makeAnimable(const std::string& animationName)
 
     return *this;
 }
+Entity& Entity::makePhysic(const std::string& body, b2World& world)
+{
+    getContext().getPhysicContext().addBodyToWorld(body,world,getPosition().x, getPosition().y);
+    return *this;
+}
 Entity& Entity::setPosition(float x, float y)
 {
     getContext().getGeometricalContext().getPosition().x = x;
@@ -125,6 +130,7 @@ Entity& Entity::setOrigin(float x, float y)
 }
 void Entity::render()
 {
+    myPhysicStrategy.render(getContext());
     myAnimationStrategy.render(getContext());
     myDrawingStrategy.render(getContext());
     myWriteStrategy.render(getContext());

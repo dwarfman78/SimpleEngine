@@ -26,6 +26,10 @@ namespace se
     {
         return mySoundContext;
     }
+    PhysicContext& RenderingContext::getPhysicContext()
+    {
+        return myPhysicContext;
+    }
     bool RenderingContext::isValid() const
     {
         return true;
