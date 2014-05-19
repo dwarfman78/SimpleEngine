@@ -17,6 +17,10 @@ SceneSetImplementation::SceneSetImplementation() :
 }
 SceneSetImplementation::~SceneSetImplementation()
 {
+    for(std::set<std::shared_ptr<Renderable> >::iterator i = myRenderables.begin(); i!=myRenderables.end();)
+    {
+        myRenderables.erase(i++);
+    }
 }
 void SceneSetImplementation::registerRenderable(std::shared_ptr<Renderable> renderable)
 {
@@ -75,7 +79,7 @@ unsigned int SceneSetImplementation::renderingPosition() const
 {
     return 0;
 }
-std::shared_ptr<Entity>  SceneSetImplementation::addTemporaryPhysicParticle(float positionX, float positionY, float originX, float originY, float rotation, sf::Int64 duration, const std::string& media, const std::string& body)
+std::shared_ptr<Entity> SceneSetImplementation::addTemporaryPhysicParticle(float positionX, float positionY, float originX, float originY, float rotation, sf::Int64 duration, const std::string& media, const std::string& body)
 {
     std::shared_ptr<Entity> entity = std::make_shared<Entity>();
 
@@ -171,11 +175,9 @@ std::shared_ptr<Entity>  SceneSetImplementation::addTemporarySoundEntity(const s
 }
 void SceneSetImplementation::loadMusic(const std::string& fileName)
 {
-
     myMusic.openFromFile(fileName);
     myMusic.setLoop(true);
     myMusic.setVolume(30);
-
 }
 const sf::Music& SceneSetImplementation::getCurrentMusic() const
 {
