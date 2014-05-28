@@ -58,6 +58,21 @@ public:
     {
         return pixels/60.0f;
     }
+    static void applyBlastImpulse(b2Body* body, b2Vec2 blastCenter, b2Vec2 applyPoint, float blastPower)
+    {
+        //ignore the grenade itself, and any non-dynamic bodies
+        if ( body->GetType() != b2_dynamicBody )
+            return;
+        b2Vec2 blastDir = applyPoint - blastCenter;
+        float distance = blastDir.Normalize();
+        //ignore bodies exactly at the blast point - blast direction is undefined
+        if ( distance == 0 )
+            return;
+        float invDistance = 1 / distance;
+        float impulseMag = blastPower * invDistance * invDistance;
+        impulseMag = b2Min( impulseMag, 500.0f );
+        body->ApplyLinearImpulse( impulseMag * blastDir, applyPoint, true );
+    }
 };
 }
 #endif
