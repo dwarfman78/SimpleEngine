@@ -4,6 +4,7 @@
 #include <SimpleEngine/Core/Scene.hpp>
 #include <SimpleEngine/Core/Entity.hpp>
 #include <SimpleEngine/Physics/PhysicBodyManager.hpp>
+#include <SimpleEngine/Physics/RaycastNearestCallback.hpp>
 namespace se
 {
 ////////////////////////////////////////////////////////////
@@ -53,6 +54,8 @@ public:
     b2World& getPhysicWorld() {return myPhysicWorld;};
 
     b2Body* getGround() {return myGround;};
+
+    void makeExplosion(const b2Vec2& center, float radius, float power);
 private:
     std::set< std::shared_ptr<Renderable>, std::function<bool(std::shared_ptr<Renderable>, std::shared_ptr<Renderable>)> > myRenderables;
 

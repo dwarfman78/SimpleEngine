@@ -26,6 +26,8 @@ public:
     virtual void unregisterRenderable(std::shared_ptr<Renderable> renderable) = 0;
     virtual void cleanRenderables() = 0;
 
+    virtual void makeExplosion(const b2Vec2& center, float radius, float power) = 0;
+
     ////////////////////////////////////////////////////////////
 
     ////////////////////////////////////////////////////////////

@@ -75,6 +75,21 @@ bool SceneSetImplementation::unregister() const
 {
     return false;
 }
+void SceneSetImplementation::makeExplosion(const b2Vec2& center, float radius, float power)
+{
+    for (int i = 0; i < 512; i++)
+    {
+        float angle = (i / 512.f) * 360 * 0.0174532925199432957f;
+        b2Vec2 rayDir( sinf(angle), cosf(angle) );
+        b2Vec2 rayEnd = center + radius * rayDir;
+
+        //check what this ray hits
+        RaycastNearestCallback callback;//basic callback to record body and hit point
+        myPhysicWorld.RayCast(&callback, center, rayEnd);
+        if ( callback.myBody != nullptr)
+            Utils::applyBlastImpulse(callback.myBody, center, callback.myPoint, (power / 512.f));
+    }
+}
 unsigned int SceneSetImplementation::renderingPosition() const
 {
     return 0;
