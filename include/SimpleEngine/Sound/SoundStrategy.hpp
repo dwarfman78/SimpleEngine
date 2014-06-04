@@ -6,6 +6,7 @@
 #include <SimpleEngine/myImports.hpp>
 #include <SimpleEngine/Core/RenderingStrategy.hpp>
 #include <SimpleEngine/Graphic/GraphicEngine.hpp>
+#include <SimpleEngine/Sound/SoundPool.hpp>
 ////////////////////////////////////////////////////////////
 namespace se
 {

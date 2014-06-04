@@ -5,7 +5,7 @@ namespace se
   *
   * @todo: document this function
   */
-SoundContext::SoundContext() : myValid(false)
+SoundContext::SoundContext() : myValid(false), mySound(nullptr)
 {
 
 }
@@ -15,28 +15,32 @@ SoundContext::SoundContext() : myValid(false)
   * @todo: document this function
   */
 SoundContext::SoundContext(const std::string& soundName) :
-    mySound(Manager<sf::SoundBuffer,sf::Sound,se::xmlTags::SOUND>::getInstance()->getResource(soundName)),
     myPlayOnce(true),
     myPlayed(false),
     myValid(true),
-    myCurrentSoundName(soundName.c_str())
+    myCurrentSoundName(soundName.c_str()),
+    mySound(SoundPool::getInstance()->getSound(soundName))
 {
 
 }
-void SoundContext::setSound(const std::string& soundName, sf::Sound sound)
+void SoundContext::setSound(const std::string& soundName)
 {
     if(soundName.compare(myCurrentSoundName) != 0)
     {
-        mySound = sound;
         myValid = true;
         myPlayOnce = true;
         myPlayed = false;
         myCurrentSoundName = soundName;
+        mySound = SoundPool::getInstance()->getSound(soundName);
     }
 
 }
 const std::string& SoundContext::getCurrentSoundName() const{
 return myCurrentSoundName;
+}
+std::shared_ptr<sf::Sound> SoundContext::getSound()
+{
+    return mySound;
 }
 
 /** @brief isValid
@@ -71,10 +75,6 @@ bool SoundContext::played() const
 void SoundContext::reset()
 {
     myPlayed = false;
-}
-sf::Sound& SoundContext::getSound()
-{
-    return mySound;
 }
 bool SoundContext::playOnce() const
 {

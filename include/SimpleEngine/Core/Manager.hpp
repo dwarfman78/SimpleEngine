@@ -47,6 +47,11 @@ namespace se
         ////////////////////////////////////////////////////////////
         R getResource(const std::string& resourceName) const;
 
+        ////////////////////////////////////////////////////////////
+        /// Return the number of loaded resources from xml file.
+        ////////////////////////////////////////////////////////////
+        unsigned int getNbLoadedResources() const;
+
         private:
 
         Manager();

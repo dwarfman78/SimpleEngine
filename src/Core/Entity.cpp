@@ -44,7 +44,7 @@ Entity& Entity::makeDrawable(const std::string& img)
 }
 Entity& Entity::makeSound(const std::string& soundName)
 {
-    getContext().getSoundContext().setSound(soundName,Manager<sf::SoundBuffer,sf::Sound,se::xmlTags::SOUND>::getInstance()->getResource(soundName));
+    getContext().getSoundContext().setSound(soundName);
 
     return *this;
 }
@@ -134,14 +134,13 @@ void Entity::render()
     myAnimationStrategy.render(getContext());
     myDrawingStrategy.render(getContext());
     myWriteStrategy.render(getContext());
+    mySoundStrategy.render(getContext());
 
     // particles
     live(getContext());
 
     if(!getContext().getParticleContext().isAlive())
         die(getContext());
-
-    mySoundStrategy.render(getContext());
 }
 void Entity::renderLogic()
 {

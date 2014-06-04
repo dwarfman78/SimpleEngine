@@ -77,9 +77,9 @@ bool SceneSetImplementation::unregister() const
 }
 void SceneSetImplementation::makeExplosion(const b2Vec2& center, float radius, float power)
 {
-    for (int i = 0; i < 512; i++)
+    for (int i = 0; i < 1024; i++)
     {
-        float angle = (i / 512.f) * 360 * 0.0174532925199432957f;
+        float angle = (i / 1024.f) * 360 * 0.0174532925199432957f;
         b2Vec2 rayDir( sinf(angle), cosf(angle) );
         b2Vec2 rayEnd = center + radius * rayDir;
 
@@ -87,7 +87,7 @@ void SceneSetImplementation::makeExplosion(const b2Vec2& center, float radius, f
         RaycastNearestCallback callback;//basic callback to record body and hit point
         myPhysicWorld.RayCast(&callback, center, rayEnd);
         if ( callback.myBody != nullptr)
-            Utils::applyBlastImpulse(callback.myBody, center, callback.myPoint, (power / 512.f));
+            Utils::applyBlastImpulse(callback.myBody, center, callback.myPoint, (power / 1024.f));
     }
 }
 unsigned int SceneSetImplementation::renderingPosition() const
@@ -99,6 +99,8 @@ std::shared_ptr<Entity> SceneSetImplementation::addTemporaryPhysicParticle(float
     std::shared_ptr<Entity> entity = std::make_shared<Entity>();
 
     entity->makeDrawable(media);
+
+    entity->setRenderingPosition(1);
 
     entity->makeParticle(
         [](RenderingContext& context)
@@ -136,6 +138,8 @@ std::shared_ptr<Entity>  SceneSetImplementation::addTemporaryParticleEntity(floa
 
     entity->makeAnimable(animation);
 
+    entity->setRenderingPosition(1);
+
     entity->makeParticle(
         [](RenderingContext& context)
     {
@@ -168,7 +172,7 @@ std::shared_ptr<Entity>  SceneSetImplementation::addTemporarySoundEntity(const s
     std::shared_ptr<Entity> entity = std::make_shared<Entity>();
 
     entity->makeSound(soundName);
-    entity->getContext().getParticleContext().setLifeTime(entity->getContext().getSoundContext().getSound().getBuffer()->getDuration().asMicroseconds());
+    entity->setRenderingPosition(0);
     entity->makeParticle(
         [](RenderingContext& context)
     {
@@ -176,11 +180,17 @@ std::shared_ptr<Entity>  SceneSetImplementation::addTemporarySoundEntity(const s
     },
     [](RenderingContext& context)
     {
-        ParticleStrategy::live(context);
+        SoundContext& sc = context.getSoundContext();
+
+        if(sc.played()&&sc.getSound()->getStatus()==sf::Sound::Stopped)
+        {
+            context.getParticleContext().setAlive(false);
+        }
     },
     [](RenderingContext& context)
     {
-        ParticleStrategy::die(context);
+        SoundContext& sc = context.getSoundContext();
+        SoundPool::getInstance()->releaseSound(sc.getCurrentSoundName(),sc.getSound());
     }
     );
 

@@ -13,9 +13,14 @@ void SoundStrategy::render(RenderingContext& rc)
     {
         if(!context.playOnce()||(context.playOnce()&&!context.played()))
         {
-            context.getSound().setVolume(50);
-            context.getSound().play();
-            context.setPlayed(true);
+            auto sound = context.getSound();
+            if(sound!=nullptr)
+            {
+                sound->setVolume(50);
+                sound->play();
+                context.setPlayed(true);
+            }
+
         }
     }
 }

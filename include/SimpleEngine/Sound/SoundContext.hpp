@@ -7,6 +7,7 @@
 #include <SimpleEngine/ToolBox/NonCopyable.hpp>
 #include <SimpleEngine/Core/Manager.hpp>
 #include <SimpleEngine/Core/Context.hpp>
+#include <SimpleEngine/Sound/SoundPool.hpp>
 ////////////////////////////////////////////////////////////
 namespace se
 {
@@ -32,18 +33,19 @@ public:
 
     void reset();
 
-    sf::Sound& getSound();
+    void setSound(const std::string& soundName);
 
-    void setSound(const std::string& soundName, sf::Sound sound);
+    std::shared_ptr<sf::Sound> getSound();
 
     const std::string& getCurrentSoundName() const;
 
 private:
-    sf::Sound mySound;
+
     bool myPlayOnce;
     bool myPlayed;
     bool myValid;
     std::string myCurrentSoundName;
+    std::shared_ptr<sf::Sound> mySound;
 };
 }
 #endif // SoundContext_hpp

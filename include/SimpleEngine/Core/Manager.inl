@@ -3,13 +3,13 @@ Manager<M,R,xmlTag>::Manager() : myXmlTag(xmlTag)
 {
     Logger log("Manager::Manager");
 
-    //log << "Trying to load medias config file : " + MEDIAS_CONF_FILE;
+    log << "Trying to load medias config file : " + MEDIAS_CONF_FILE;
 
     pugi::xml_document doc;
 
     if(doc.load_file(MEDIAS_CONF_FILE.c_str()))
     {
-        //log << "Medias file successfully loaded, loading resources";
+        log << "Medias file successfully loaded, loading resources";
 
         // load resources from conf
         loadResources(doc);
@@ -83,5 +83,10 @@ void Manager<M,R,xmlTag>::loadResources(const pugi::xml_document& doc)
             // .. />
 
         }
+}
+template <class M, class R, const xmlTags::xmlTag xmlTag>
+unsigned int Manager<M,R,xmlTag>::getNbLoadedResources() const
+{
+    return myResources.size();
 }
 

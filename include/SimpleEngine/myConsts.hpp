@@ -8,4 +8,5 @@ const std::string ANIMATIONS_CONF_FILE = "conf/animations.xml";
 const std::string PHYSICS_CONF_FILE = "conf/physics.xml";
 const float PI = 3.14159f;
 const float RADS_TO_DEG_RATIO = 180/PI;
+const unsigned int MAX_SF_SOUND = 200;
 #endif
