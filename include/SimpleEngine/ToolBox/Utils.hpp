@@ -52,11 +52,11 @@ public:
     }
     static float metersToPixels(float meters)
     {
-        return meters*60.0f;
+        return meters*32.0f;
     }
     static float pixelsToMeters(float pixels)
     {
-        return pixels/60.0f;
+        return pixels/32.0f;
     }
     static void applyBlastImpulse(b2Body* body, b2Vec2 blastCenter, b2Vec2 applyPoint, float blastPower)
     {
