@@ -48,6 +48,8 @@ void PhysicBodyManager::loadDefinitions(const pugi::xml_document& doc)
         if(type.compare("dynamic") == 0)
         {
             bodyDef.type = b2_dynamicBody;
+            bodyDef.allowSleep = true;
+            bodyDef.awake = false;
         }
 
         //for(pugi::xml_node fixture = body.child("fixture"); fixture; fixture = body.next_sibling("fixture"))

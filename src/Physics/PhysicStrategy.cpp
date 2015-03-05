@@ -8,9 +8,12 @@ void PhysicStrategy::render(RenderingContext& rc)
 
     if(gc.isValid()&&pc.isValid())
     {
-        gc.getPosition().x = Utils::metersToPixels(pc.getBody()->GetPosition().x);
-        gc.getPosition().y = Utils::metersToPixels(pc.getBody()->GetPosition().y);
-        gc.setRotation(Utils::radsToDeg(pc.getBody()->GetAngle()));
+        b2Body *pBody = pc.getBody();
+        b2Vec2 const &bodyPos = pBody->GetPosition();
+
+        gc.getPosition().x = Utils::metersToPixels(bodyPos.x);
+        gc.getPosition().y = Utils::metersToPixels(bodyPos.y);
+        gc.setRotation(Utils::radsToDeg(pBody->GetAngle()));
     }
 }
 

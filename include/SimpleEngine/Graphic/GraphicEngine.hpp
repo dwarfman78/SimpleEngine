@@ -34,6 +34,8 @@ namespace se
 
         void draw(const sf::Sprite& s);
 
+        void draw(const sf::Shape& shape);
+
         void setShowFps(const bool b);
 
         bool isShowFps() const;

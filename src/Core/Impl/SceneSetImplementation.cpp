@@ -5,14 +5,14 @@ SceneSetImplementation::SceneSetImplementation() :
     myRenderables([](std::shared_ptr<Renderable> rOne, std::shared_ptr<Renderable> rTwo)->bool { return rOne->renderingPosition() <= rTwo->renderingPosition();}),
               myPhysicWorld(b2Vec2(0.0,PhysicBodyManager::getInstance()->getGravity()))
 {
-    b2BodyDef groundBodyDef;
+   /* b2BodyDef groundBodyDef;
     groundBodyDef.position.Set(Utils::pixelsToMeters(0.0f), Utils::pixelsToMeters(0.0f));
     b2Body* groundBody = myPhysicWorld.CreateBody(&groundBodyDef);
     b2PolygonShape groundBox;
     groundBox.SetAsBox(Utils::pixelsToMeters(800.0f),Utils::pixelsToMeters(600.0f));
     groundBody->CreateFixture(&groundBox, 1.0f);
 
-    myGround = groundBody;
+    myGround = groundBody;*/
 
 }
 SceneSetImplementation::~SceneSetImplementation()
@@ -87,7 +87,11 @@ void SceneSetImplementation::makeExplosion(const b2Vec2& center, float radius, f
         RaycastNearestCallback callback;//basic callback to record body and hit point
         myPhysicWorld.RayCast(&callback, center, rayEnd);
         if ( callback.myBody != nullptr)
+        {
+
             Utils::applyBlastImpulse(callback.myBody, center, callback.myPoint, (power / 1024.f));
+        }
+
     }
 }
 unsigned int SceneSetImplementation::renderingPosition() const

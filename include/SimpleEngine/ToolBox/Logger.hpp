@@ -4,7 +4,7 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <SimpleEngine/myImports.hpp>
-#include <SimpleEngine/Toolbox/NonCopyable.hpp>
+#include "NonCopyable.hpp"
 ////////////////////////////////////////////////////////////
 /// Class for basic logging.
 /// This class behavior is to log data into a buffer.

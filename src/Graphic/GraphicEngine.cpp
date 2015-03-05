@@ -22,6 +22,10 @@ void GraphicEngine::draw(const sf::Uint32 d)
 {
 
 }
+void GraphicEngine::draw(const sf::Shape& shape)
+{
+    myRenderTexture.draw(shape);
+}
 void GraphicEngine::draw(const sf::Sprite& s)
 {
     myRenderTexture.draw(s);

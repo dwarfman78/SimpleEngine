@@ -151,6 +151,7 @@ private:
     /// //TODO : Add tileset capabilities
     ////////////////////////////////////////////////////////////
     bool myBackgroundIsSet;
+    bool myConsoleApplication;
     sf::Texture myBackgroundTexture;
     sf::Sprite myBackgroundSprite;
     ////////////////////////////////////////////////////////////

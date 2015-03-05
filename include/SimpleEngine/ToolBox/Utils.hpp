@@ -12,9 +12,9 @@ public:
     template <typename T>
     static std::string toString(const T& in)
     {
-        // utiliser un flux de sortie pour créer la chaîne
+        // utiliser un flux de sortie pour crï¿½er la chaï¿½ne
         std::ostringstream oss;
-        // écrire la valeur dans le flux
+        // ï¿½crire la valeur dans le flux
         oss << in;
         // renvoyer une string
         return oss.str();
@@ -52,11 +52,11 @@ public:
     }
     static float metersToPixels(float meters)
     {
-        return meters*32.0f;
+        return meters*15.0f;
     }
     static float pixelsToMeters(float pixels)
     {
-        return pixels/32.0f;
+        return pixels/15.0f;
     }
     static void applyBlastImpulse(b2Body* body, b2Vec2 blastCenter, b2Vec2 applyPoint, float blastPower)
     {
@@ -71,6 +71,7 @@ public:
         float invDistance = 1 / distance;
         float impulseMag = blastPower * invDistance * invDistance;
         impulseMag = b2Min( impulseMag, 500.0f );
+        body->SetGravityScale(1);
         body->ApplyLinearImpulse( impulseMag * blastDir, applyPoint, true );
     }
 };
