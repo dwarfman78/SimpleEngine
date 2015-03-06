@@ -3,7 +3,7 @@
 namespace se
 {
     UdpClient::UdpClient(const sf::IpAddress serverIp, unsigned short serverPort)
-            : mServerIp(serverIp), mServerPort(serverPort)
+            : mServerIp(serverIp), mServerPort(serverPort), mConnected(false)
     {
     }
 

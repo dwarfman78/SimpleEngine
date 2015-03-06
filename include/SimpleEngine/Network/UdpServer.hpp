@@ -11,6 +11,9 @@ namespace se
     public:
         UdpServer(unsigned short port);
     private:
+        unsigned short mPort;
+        sf::UdpSocket mSocket;
+
     };
 }
 #endif
